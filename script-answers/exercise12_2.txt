@@ -1,0 +1,20 @@
+Script started on 2022-07-08 01:34:40+03:00 [TERM="xterm-256color" TTY="/dev/pts/0" COLUMNS="120" LINES="30"]
+[1m[7m%[27m[1m[0m                                                                                                                        ]2;ahlstrk2@DESKTOP-BQEJVIN:~/github/part12-containers-applications/script-answers]1;..cript-answers[0m[27m[24m[J[38;5;237m------------------------------------------------------------------------------------------------------------------------[00m
+[38;5;032m~/github/part12-containers-applications/script-answers [38;5;075m([38;5;078mmain[38;5;214m*[00m[38;5;075m)[00m [38;5;105m»[00m [K[29C [38;5;237mahlstrk2@DESKTOP-BQEJVIN[00m[54D[?1h=[?2004hscript exercise12_2.txt[23Dcd script-answers      [17Dls               [15Drm typescript[13Dls           [11Dexitscriptlws   rm typescript[13Dnano typescript[15Dcat typescript [14Dls            [12Dexitecho "hello"[12Dscript      docker image ls[8Dcontainer lsrun -it ubuntu bash[K[29Drun hello-world[K[7C [38;5;237mahlstrk2@DESKTOP-BQEJVIN[00m[32D[15Dcontainer run -it ubuntu bash[K[?1l>[?2004l
+]2;docker container run -it ubuntu bash]1;docker[?2004h]0;root@716bc250d2e9: /root@716bc250d2e9:/# [K]0;root@716bc250d2e9: /root@716bc250d2e9:/# mk  ls
+[?2004l[0m[01;36mbin[0m  [01;34mboot[0m  [01;34mdev[0m  [01;34metc[0m  [01;34mhome[0m  [01;36mlib[0m  [01;36mlib32[0m  [01;36mlib64[0m  [01;36mlibx32[0m  [01;34mmedia[0m  [01;34mmnt[0m  [01;34mopt[0m  [01;34mproc[0m  [01;34mroot[0m  [01;34mrun[0m  [01;36msbin[0m  [01;34msrv[0m  [01;34msys[0m  [30;42mtmp[0m  [01;34musr[0m  [01;34mvar[0m
+[?2004h]0;root@716bc250d2e9: /root@716bc250d2e9:/# cd /   d / s usr/src/
+[?2004l[?2004h]0;root@716bc250d2e9: /usr/srcroot@716bc250d2e9:/usr/src# ls
+[?2004l[?2004h]0;root@716bc250d2e9: /usr/srcroot@716bc250d2e9:/usr/src# cd    mkdir app
+[?2004l[?2004h]0;root@716bc250d2e9: /usr/srcroot@716bc250d2e9:/usr/src# ls
+[?2004l[0m[01;34mapp[0m
+[?2004h]0;root@716bc250d2e9: /usr/srcroot@716bc250d2e9:/usr/src# cd app/
+[?2004l[?2004h]0;root@716bc250d2e9: /usr/src/approot@716bc250d2e9:/usr/src/app# touch index.js
+[?2004l[?2004h]0;root@716bc250d2e9: /usr/src/approot@716bc250d2e9:/usr/src/app# exit[Kls
+[?2004lindex.js
+[?2004h]0;root@716bc250d2e9: /usr/src/approot@716bc250d2e9:/usr/src/app# exit
+[?2004lexit
+[1m[7m%[27m[1m[0m                                                                                                                        ]2;ahlstrk2@DESKTOP-BQEJVIN:~/github/part12-containers-applications/script-answers]1;..cript-answers[0m[27m[24m[J[38;5;237m------------------------------------------------------------------------------------------------------------------------[00m
+[38;5;032m~/github/part12-containers-applications/script-answers [38;5;075m([38;5;078mmain[38;5;214m*[00m[38;5;075m)[00m [38;5;105m»[00m [K[29C [38;5;237mahlstrk2@DESKTOP-BQEJVIN[00m[54D[?1h=[?2004hee[90mxit[39me[39mx[39mi[39mt[?1l>[?2004l
+]2;exit]1;exit
+Script done on 2022-07-08 01:35:54+03:00 [COMMAND_EXIT_CODE="0"]
