@@ -1,0 +1,6 @@
+mongo_data
+node_modules
+.dockerignore
+Dockerfile
+dev.Dockerfile
+redis_data
