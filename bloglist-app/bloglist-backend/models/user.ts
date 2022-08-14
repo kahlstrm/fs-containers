@@ -8,7 +8,7 @@ class User extends Model {
   declare name: string;
   declare password?: string;
   declare disabled: boolean;
-  declare sessions: string[];
+  declare sessions?: string[];
 }
 
 User.init(
