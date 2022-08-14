@@ -5,5 +5,5 @@ const getAll = async () => {
   const response = await axios.get(baseUrl)
   return response.data
 }
-
-export default { getAll }
+const userService = { getAll }
+export default userService

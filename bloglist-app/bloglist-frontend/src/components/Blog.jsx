@@ -1,10 +1,20 @@
 import React, { useState } from 'react'
 import PropTypes from 'prop-types'
 import { createComment } from '../services/blogs'
-const Blog = ({ blog, addLike, remove, userId }) => {
+import { useDispatch } from 'react-redux'
+import { deleteBlog, likeBlog } from '../reducers/blogReducer'
+const Blog = ({ blog, userId }) => {
   const [likes, setLikes] = useState(blog.likes)
   const [comment, setComment] = useState('')
   const [comments, setComments] = useState(blog.comments)
+  const dispatch = useDispatch()
+  const addLike = (blog) => {
+    dispatch(likeBlog(blog))
+  }
+  const remove = (blog) => {
+    dispatch(deleteBlog(blog))
+  }
+
   const handleLike = () => {
     addLike({ ...blog, likes: likes })
     setLikes(likes + 1)
@@ -69,8 +79,6 @@ const Blog = ({ blog, addLike, remove, userId }) => {
 }
 Blog.propTypes = {
   blog: PropTypes.object,
-  addLike: PropTypes.func,
-  remove: PropTypes.func,
   userId: PropTypes.string,
 }
 
