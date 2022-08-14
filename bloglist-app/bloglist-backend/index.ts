@@ -1,4 +1,5 @@
 require('express-async-errors');
+import cors from 'cors';
 import express from 'express';
 import { errorHandler } from './util/middleware';
 import { PORT } from './util/config';
@@ -10,8 +11,8 @@ import authorRouter from './controllers/authors';
 import readingListrouter from './controllers/readinglists';
 const app = express();
 
+app.use(cors());
 app.use(express.json());
-
 app.use('/api/blogs', blogRouter);
 app.use('/api/users', userRouter);
 app.use('/api/login', loginRouter);
