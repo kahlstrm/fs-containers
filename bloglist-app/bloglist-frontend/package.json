@@ -40,11 +40,11 @@
       "last 1 safari version"
     ]
   },
-  "proxy": "http://localhost:3001",
   "devDependencies": {
     "@testing-library/jest-dom": "^5.16.1",
     "@testing-library/react": "^12.1.2",
     "eslint-plugin-jest": "^24.7.0",
+    "react-error-overlay": "6.0.9",
     "redux-devtools-extension": "^2.13.9"
   }
 }
