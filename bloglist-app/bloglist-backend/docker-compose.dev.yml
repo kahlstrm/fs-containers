@@ -1,0 +1,14 @@
+version: '3.8'
+
+services:
+  app:
+    image: bloglist-backend-dev
+    build:
+      context: .
+      dockerfile: dev.Dockerfile
+    env_file:
+      - .env
+    ports:
+      - 3001:3001
+    volumes:
+      - ./:/usr/src/app
