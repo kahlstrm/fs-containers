@@ -28,7 +28,7 @@ export const tokenExtractor: RequestHandler = async (
     const user = await User.findByPk(parsed.id, {
       attributes: ['id', 'sessions', 'disabled'],
     });
-    if (!user || !user.sessions.includes(auth.substring(7))) {
+    if (!user || !user.sessions!.includes(auth.substring(7))) {
       throw Error('invalid token');
     }
     if (user.disabled) {

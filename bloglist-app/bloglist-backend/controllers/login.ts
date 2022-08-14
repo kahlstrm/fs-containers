@@ -16,7 +16,7 @@ router.post('/', async (req, res) => {
       username: body.username,
     },
     attributes: {
-      include: ['password','sessions'],
+      include: ['password', 'sessions'],
     },
   });
   const passwordCorrect = user?.password
@@ -35,7 +35,9 @@ router.post('/', async (req, res) => {
   };
 
   const token = jwt.sign(userForToken, SECRET);
-  await user.update({ sessions: [...user.sessions, token] });
+  if (user.sessions) {
+    await user.update({ sessions: [...user.sessions, token] });
+  }
   return res
     .status(200)
     .send({ token, username: user.username, name: user.name });
