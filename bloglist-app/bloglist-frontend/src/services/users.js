@@ -1,8 +1,9 @@
 import axios from 'axios'
-const baseUrl = '/api/users'
+import { baseUrl } from '../config'
+const url = baseUrl + '/api/users'
 
 const getAll = async () => {
-  const response = await axios.get(baseUrl)
+  const response = await axios.get(url)
   return response.data
 }
 const userService = { getAll }

@@ -1,5 +1,6 @@
 import axios from 'axios'
-const baseUrl = '/api/blogs'
+import { baseUrl } from '../config'
+const url = baseUrl + '/api/blogs'
 
 let token = ''
 
@@ -11,12 +12,12 @@ const createBlog = (newBlog) => {
     headers: { Authorization: token },
   }
   console.log(config)
-  const request = axios.post(baseUrl, newBlog, config)
+  const request = axios.post(url, newBlog, config)
   return request.then((response) => response.data)
 }
 export const createComment = (comment, id, blogs, setComment) => {
   console.log(comment)
-  const request = axios.post(`${baseUrl}/${id}/comments`, { comment })
+  const request = axios.post(`${url}/${id}/comments`, { comment })
   return request.then((response) => {
     if (response.status === 200) {
       setComment(blogs.concat(comment))
@@ -25,12 +26,12 @@ export const createComment = (comment, id, blogs, setComment) => {
   })
 }
 const getAll = () => {
-  const request = axios.get(baseUrl)
+  const request = axios.get(url)
   return request.then((response) => response.data)
 }
 const update = (updatedBlog) => {
   const userId = updatedBlog.user.id
-  const request = axios.put(`${baseUrl}/${updatedBlog.id}`, {
+  const request = axios.put(`${url}/${updatedBlog.id}`, {
     ...updatedBlog,
     user: userId,
   })
@@ -41,7 +42,7 @@ const remove = (blog) => {
     headers: { Authorization: token },
   }
   const blogId = blog.id
-  const request = axios.delete(`${baseUrl}/${blogId}`, config)
+  const request = axios.delete(`${url}/${blogId}`, config)
   return request.then((response) => response.data)
 }
 const blogService = { getAll, setToken, createBlog, update, remove }
