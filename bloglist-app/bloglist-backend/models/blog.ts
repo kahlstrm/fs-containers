@@ -37,7 +37,7 @@ Blog.init(
       type: DataTypes.INTEGER,
       validate: {
         min: 1991,
-        maxYear(value: any) {
+        maxYear(value: string) {
           if (parseInt(value) > new Date().getFullYear()) {
             throw Error('year cannot be in the future');
           }
