@@ -1,23 +1,40 @@
-import { AppDispatch } from '../store'
-import { User } from '../types'
+import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
+import blogService from '../services/blogs'
+import loginService from '../services/login'
+import { Credentials, user as userType, User } from '../types'
 
-export const setUser = (user: User) => {
-  return (dispatch: AppDispatch) => {
-    dispatch({ type: 'SETUSER', data: user })
+type UserState = User | null
+export const logOut = createAsyncThunk('user/logout', async () => {
+  await loginService.logout()
+})
+export const logIn = createAsyncThunk(
+  'user/login',
+  async (credentials: Credentials) => {
+    const user = await loginService.login(credentials)
+    console.log(user)
+    window.localStorage.setItem('loggedBlogUser', JSON.stringify(user))
+    blogService.setToken(user.token)
+    return userType.parse(user)
   }
-}
-
-interface UserReducerAction {
-  type: 'SETUSER'
-  data: User
-}
-const userReducer = (state: User | null = null, action: UserReducerAction) => {
-  switch (action.type) {
-    case 'SETUSER':
-      return action.data
-    default:
-      return state
-  }
-}
-
-export default userReducer
+)
+const initialState = null as UserState
+const userReducer = createSlice({
+  name: 'user',
+  initialState,
+  reducers: {
+    setUser(_, action: PayloadAction<User>) {
+      return action.payload
+    },
+  },
+  extraReducers(builder) {
+    builder
+      .addCase(logOut.fulfilled, (state) => {
+        return null
+      })
+      .addCase(logIn.fulfilled, (state, action) => {
+        return action.payload
+      })
+  },
+})
+export const { setUser } = userReducer.actions
+export default userReducer.reducer

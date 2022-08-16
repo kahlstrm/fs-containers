@@ -1,11 +1,14 @@
 import React, { useState } from 'react'
+import { NewBlog } from './Blogs'
 
-const BlogForm = ({ createBlog }) => {
+const BlogForm: React.FC<{ createBlog: (blog: NewBlog) => void }> = ({
+  createBlog,
+}) => {
   const [newTitle, setNewTitle] = useState('')
   const [newAuthor, setNewAuthor] = useState('')
   const [newUrl, setNewUrl] = useState('')
 
-  const handleSubmit = (event) => {
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
     createBlog({
       title: newTitle,

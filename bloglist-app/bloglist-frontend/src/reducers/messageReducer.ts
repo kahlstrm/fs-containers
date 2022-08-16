@@ -1,31 +1,25 @@
-import { AppDispatch } from '../store'
+import { createSlice } from '@reduxjs/toolkit'
+import { Message } from '../types'
 
-interface MessageReducer {
-  message: string
-  color?: string
-}
-interface MessageReducerAction {
-  type: 'SET' | 'CLEAR'
-  message?: MessageReducer
-}
-const messageReducer = (
-  state: MessageReducer = { message: '', color: '' },
-  action: MessageReducerAction
-) => {
-  switch (action.type) {
-    case 'SET':
-      return action.message ?? state
-    case 'CLEAR':
-      return { message: '', color: '' }
-    default:
-      return state
-  }
-}
-export const setNotification = (message: MessageReducer, time: number) => {
-  return async (dispatch: AppDispatch) => {
-    dispatch({ type: 'SET', message })
-    setTimeout(() => dispatch({ type: 'CLEAR' }), time * 1000)
-  }
-}
+// export const setNotification = (message: MessageReducer, time: number) => {
+//   return async (dispatch: AppDispatch) => {
+//     dispatch({ type: 'SET', message })
+//     setTimeout(() => dispatch({ type: 'CLEAR' }), time * 1000)
+//   }
+// }
+const initialState: Message = { message: '', color: '' }
 
-export default messageReducer
+const messageSlicer = createSlice({
+  name: 'message',
+  initialState,
+  reducers: {
+    setMessage(state, action) {
+      return action.payload
+    },
+    clearMessage(state) {
+      state.message = ''
+    },
+  },
+})
+export const { setMessage, clearMessage } = messageSlicer.actions
+export default messageSlicer.reducer

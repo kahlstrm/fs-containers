@@ -1,64 +1,80 @@
-import blogService from '../services/blogs'
-import { AppThunk } from '../store'
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
+import { NewBlog } from '../components/Blogs'
+import blogService, { createComment } from '../services/blogs'
 import { Blog } from '../types'
 
-export const initializeBlogs = (): AppThunk => {
-  return async (dispatch) => {
-    const blogs = await blogService.getAll()
-    dispatch({ type: 'INIT', data: blogs })
+// export const initializeBlogs = () => {
+//   return async (dispatch) => {
+//     const blogs = await blogService.getAll()
+//     dispatch({ type: 'INIT', data: blogs })
+//   }
+// }
+//  const createBlog = (blog: Blog) => {
+//   return async (dispatch) => {
+//     const newBlog = await blogService.createBlog(blog)
+//     dispatch({ type: 'CREATE', data: newBlog })
+//   }
+// }
+export const initializeBlogs = createAsyncThunk('blog/Initialize', async () => {
+  const blogs = await blogService.getAll()
+  return blogs
+})
+export const createBlog = createAsyncThunk(
+  'blog/create',
+  async (blog: NewBlog) => {
+    return await blogService.createBlog(blog)
   }
-}
-export const createBlog = (blog: Blog): AppThunk => {
-  return async (dispatch) => {
-    const newBlog = await blogService.createBlog(blog)
-    dispatch({ type: 'CREATE', data: newBlog })
-  }
-}
-export const likeBlog = (blog: Blog): AppThunk => {
-  return async (dispatch) => {
-    await blogService.update({ ...blog, likes: blog.likes + 1 })
-    dispatch({ type: 'LIKE', data: blog })
-  }
-}
-export const deleteBlog = (blog: Blog): AppThunk => {
-  return async (dispatch) => {
-    await blogService.remove(blog)
-    dispatch({ type: 'DELET THIS', data: blog })
-  }
-}
-export const updateBlog = (blog: Blog): AppThunk => {
-  return (dispatch) => {
-    dispatch({ type: 'UPDATE', data: blog })
-  }
-}
-interface BlogListReducerAction {
-  type: 'INIT'
-  data: Blog[]
-}
-interface SingleBlogReducerAction {
-  type: 'CREATE' | 'LIKE' | 'DELET THIS' | 'UPDATE'
-  data: Blog
-}
-//this shouldn't be done https://phryneas.de/redux-typescript-no-discriminating-union
-// but I did it anyway :D
-type BlogReducerAction = SingleBlogReducerAction | BlogListReducerAction
-const blogReducer = (state: Blog[] = [], action: BlogReducerAction) => {
-  switch (action.type) {
-    case 'INIT':
-      return action.data.sort((a, b) => b.likes - a.likes)
-    case 'CREATE':
-      return state.concat(action.data)
-    case 'LIKE':
-      return state
-        .map((n) => (n.id !== action.data.id ? n : action.data))
-        .sort((a, b) => b.likes - a.likes)
-    case 'DELET THIS':
-      return state.filter((n) => n.id !== action.data.id)
-    case 'UPDATE':
-      return state.map((n) => (n.id === action.data.id ? action.data : n))
-    default:
-      return state
-  }
-}
+)
 
-export default blogReducer
+export const likeBlog = createAsyncThunk('blog/update', async (blog: Blog) => {
+  await blogService.update(blog)
+  return blog
+})
+interface AddComment {
+  comment: string
+  blogId: number
+}
+export const addComment = createAsyncThunk(
+  'blog/comment',
+  async ({ comment, blogId }: AddComment) => {
+    const res = await createComment(comment, blogId)
+    console.log(res)
+    return res
+  }
+)
+export const deleteBlog = createAsyncThunk(
+  'blog/delete',
+  async (blog: Blog) => {
+    await blogService.remove(blog)
+    return blog
+  }
+)
+const blogSlice = createSlice({
+  name: 'blog',
+  initialState: [] as Blog[],
+  reducers: {},
+  extraReducers(builder) {
+    builder
+      .addCase(initializeBlogs.fulfilled, (_, action) =>
+        action.payload.sort((a, b) => b.likes - a.likes)
+      )
+      .addCase(createBlog.fulfilled, (state, action) => {
+        state.push(action.payload)
+      })
+      .addCase(likeBlog.fulfilled, (state, action) => {
+        return state
+          .map((n) => (n.id === action.payload.id ? action.payload : n))
+          .sort((a, b) => b.likes - a.likes)
+      })
+      .addCase(addComment.fulfilled, (state, action) => {
+        return state.map((n) =>
+          n.id === action.payload.id ? action.payload : n
+        )
+      })
+      .addCase(deleteBlog.fulfilled, (state, action) => {
+        return state.filter((n) => n.id !== action.payload.id)
+      })
+  },
+})
+
+export default blogSlice.reducer

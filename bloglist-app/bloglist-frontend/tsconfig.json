@@ -19,7 +19,7 @@
     "noEmit": true,
     "jsx": "react",
     "downlevelIteration": true,
-    "allowJs": true,
+    "allowJs": false,
     "noFallthroughCasesInSwitch": true,
   },
   "include": [

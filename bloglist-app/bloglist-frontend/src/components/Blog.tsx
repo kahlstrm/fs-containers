@@ -1,27 +1,35 @@
 import React, { useState } from 'react'
-import PropTypes from 'prop-types'
-import { createComment } from '../services/blogs'
-import { useDispatch } from 'react-redux'
-import { deleteBlog, likeBlog } from '../reducers/blogReducer'
-const Blog = ({ blog, userId }) => {
-  const [likes, setLikes] = useState(blog.likes)
+
+import { addComment, deleteBlog, likeBlog } from '../reducers/blogReducer'
+import { useAppDispatch, useAppSelector } from '../hooks'
+import { Blog as BlogType } from '../types'
+import { useParams, useNavigate } from 'react-router-dom'
+const Blog = () => {
+  const navigate = useNavigate()
+  const { id } = useParams()
+  const blog = useAppSelector((state) =>
+    state.blogs.find((b) => b.id === Number(id))
+  )
+
+  const user = useAppSelector((state) => state.user)
+  const dispatch = useAppDispatch()
   const [comment, setComment] = useState('')
-  const [comments, setComments] = useState(blog.comments)
-  const dispatch = useDispatch()
-  const addLike = (blog) => {
-    dispatch(likeBlog(blog))
+  if (!blog) {
+    return null
   }
-  const remove = (blog) => {
-    dispatch(deleteBlog(blog))
+  const { comments, likes } = blog
+  const addLike = () => {
+    dispatch(likeBlog({ ...blog, likes: blog.likes + 1 }))
+  }
+  const remove = async (blog: BlogType) => {
+    await dispatch(deleteBlog(blog))
   }
 
-  const handleLike = () => {
-    addLike({ ...blog, likes: likes })
-    setLikes(likes + 1)
-  }
-  const handleRemove = () => {
-    if (window.confirm(`remove blog ${blog.title} by ${blog.author}`))
-      remove(blog)
+  const handleRemove = async () => {
+    if (window.confirm(`remove blog ${blog.title} by ${blog.author}`)) {
+      await remove(blog)
+      navigate(-1)
+    }
   }
   const blogStyle = {
     paddingTop: 10,
@@ -30,14 +38,12 @@ const Blog = ({ blog, userId }) => {
     borderWidth: 1,
     marginBottom: 5,
   }
-  const sendComment = (event) => {
+  const sendComment = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
-    createComment(comment, blog.id, comments, setComments)
+    await dispatch(addComment({ comment, blogId: blog.id }))
     setComment('')
   }
-  if (!blog) {
-    return null
-  }
+
   return (
     <div style={blogStyle} className="blog">
       <h1>
@@ -51,12 +57,12 @@ const Blog = ({ blog, userId }) => {
         </div>
         <div>
           likes {likes}{' '}
-          <button onClick={handleLike} className="likeButton">
+          <button onClick={addLike} className="likeButton">
             like
           </button>
         </div>
         <div>{blog.user ? blog.user.name : null}</div>
-        {blog.user === userId || blog.user.id === userId ? (
+        {blog.user?.id === user?.id ? (
           <button onClick={handleRemove}>remove</button>
         ) : null}
       </div>
@@ -76,10 +82,6 @@ const Blog = ({ blog, userId }) => {
       </div>
     </div>
   )
-}
-Blog.propTypes = {
-  blog: PropTypes.object,
-  userId: PropTypes.string,
 }
 
 export default Blog

@@ -1,15 +1,16 @@
 import axios from 'axios'
 import { z } from 'zod'
+import { NewBlog } from '../components/Blogs'
 import { baseUrl } from '../config'
 import { blog, Blog } from '../types'
 const url = baseUrl + '/api/blogs'
 
-let token = ''
+export let token = ''
 
 const setToken = (newtoken: string) => {
   token = `bearer ${newtoken}`
 }
-const createBlog = async (newBlog: Blog) => {
+const createBlog = async (newBlog: NewBlog) => {
   const config = {
     headers: { Authorization: token },
   }
@@ -19,13 +20,9 @@ const createBlog = async (newBlog: Blog) => {
   return response.data
 }
 export const createComment = async (comment: string, id: number) => {
-  try {
-    const res = await axios.post(`${url}/${id}/comments`, { comment })
-    const updatedBlog = blog.parse(res.data)
-    return updatedBlog
-  } catch (e) {
-    console.log(e)
-  }
+  const res = await axios.post(`${url}/${id}/comments`, { comment })
+  const updatedBlog = blog.parse(res.data)
+  return updatedBlog
 }
 const getAll = async () => {
   const request = await axios.get(url)

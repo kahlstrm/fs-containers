@@ -1,5 +1,5 @@
-import { createStore, combineReducers, applyMiddleware, AnyAction } from 'redux'
-import thunk, { ThunkAction } from 'redux-thunk'
+import { combineReducers } from 'redux'
+import { configureStore } from '@reduxjs/toolkit'
 import messageReducer from './reducers/messageReducer'
 import blogReducer from './reducers/blogReducer'
 import userReducer from './reducers/userReducer'
@@ -10,14 +10,11 @@ const reducer = combineReducers({
   user: userReducer,
   users: usersReducer,
 })
-const store = createStore(reducer, applyMiddleware(thunk))
+const store = configureStore({
+  reducer,
+})
 export type RootState = ReturnType<typeof store.getState>
 
 export type AppDispatch = typeof store.dispatch
-export type AppThunk<ReturnType = void> = ThunkAction<
-  ReturnType,
-  RootState,
-  unknown,
-  AnyAction
->
+
 export default store
