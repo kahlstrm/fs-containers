@@ -1,6 +1,6 @@
 import React, { RefObject, useRef } from 'react'
 import { Link } from 'react-router-dom'
-import { useAppDispatch, useAppSelector } from '../hooks'
+import { useAppDispatch, useAppSelector, useNotification } from '../hooks'
 import { createBlog } from '../reducers/blogReducer'
 import BlogForm from './BlogForm'
 import Togglable, { VisibilityHandle } from './Togglable'
@@ -13,30 +13,29 @@ export interface NewBlog {
 const Blogs = () => {
   const blogs = useAppSelector((state) => state.blogs)
   const dispatch = useAppDispatch()
+  const setNotification = useNotification()
   const blogFormRef = useRef<VisibilityHandle>() as RefObject<VisibilityHandle>
 
   const handleBlog = (blog: NewBlog) => {
     blogFormRef.current?.toggleVisibility()
     try {
       dispatch(createBlog(blog))
-      // dispatch(
-      //   setNotification(
-      //     {
-      //       message: `a new blog ${blog.title} by ${blog.author} added`,
-      //       color: 'green',
-      //     },
-      //     5
-      //   )
-      // )
+      setNotification(
+        {
+          message: `a new blog ${blog.title} by ${blog.author} added`,
+          color: 'green',
+        },
+        5
+      )
     } catch (erreur) {
       console.log(erreur)
-      // setNotification(
-      //   {
-      //     message: 'adding blog failed, title and url are required fields.',
-      //     color: 'red',
-      //   },
-      //   5
-      // )
+      setNotification(
+        {
+          message: 'adding blog failed, title and url are required fields.',
+          color: 'red',
+        },
+        5
+      )
     }
   }
   const blogForm = () => (

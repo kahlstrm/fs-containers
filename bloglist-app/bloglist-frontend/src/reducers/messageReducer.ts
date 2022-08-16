@@ -1,4 +1,4 @@
-import { createSlice } from '@reduxjs/toolkit'
+import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { Message } from '../types'
 
 // export const setNotification = (message: MessageReducer, time: number) => {
@@ -13,7 +13,7 @@ const messageSlicer = createSlice({
   name: 'message',
   initialState,
   reducers: {
-    setMessage(state, action) {
+    setMessage(state, action: PayloadAction<Message>) {
       return action.payload
     },
     clearMessage(state) {

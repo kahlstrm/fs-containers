@@ -11,10 +11,11 @@ import LoginForm from './components/LoginForm'
 import { Users } from './components/Users'
 import Blogs from './components/Blogs'
 import UserPage from './components/UserPage'
-import { useAppDispatch, useAppSelector } from './hooks'
+import { useAppDispatch, useAppSelector, useNotification } from './hooks'
 const App = () => {
   const user = useAppSelector((state) => state.user)
   const state = useAppSelector((state) => state)
+  const setNotification = useNotification()
   const dispatch = useAppDispatch()
   useEffect(() => {
     dispatch(initializeBlogs())
@@ -34,9 +35,7 @@ const App = () => {
   const logout = async () => {
     await dispatch(logOut())
     window.localStorage.removeItem('loggedBlogUser')
-    // dispatch(
-    //   setNotification({ message: 'you logged yourself out', color: 'green' }, 5)
-    // )
+    setNotification({ message: 'you logged yourself out', color: 'green' }, 5)
   }
   console.log(state)
 
