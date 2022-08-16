@@ -2,20 +2,20 @@ import React, { useEffect } from 'react'
 import Blog from './components/Blog'
 import blogService from './services/blogs'
 import Notification from './components/Notification'
-import { useDispatch, useSelector } from 'react-redux'
 import { setNotification } from './reducers/messageReducer'
 import { initializeBlogs } from './reducers/blogReducer'
 import { setUser } from './reducers/userReducer'
 import { Routes, Route, useMatch } from 'react-router-dom'
 import { initializeUsers } from './reducers/usersReducer'
+import { user as userType } from './types'
 import LoginForm from './components/LoginForm'
 import { Users } from './components/Users'
 import Blogs from './components/Blogs'
 import UserPage from './components/UserPage'
+import { useAppDispatch, useAppSelector } from './hooks'
 const App = () => {
-  const dispatch = useDispatch()
-  const { message, user, blogs, users } = useSelector((state) => state)
-
+  const { user, blogs, users } = useAppSelector((state) => state)
+  const dispatch = useAppDispatch()
   useEffect(() => {
     dispatch(initializeBlogs())
     dispatch(initializeUsers())
@@ -23,11 +23,15 @@ const App = () => {
       window.localStorage.getItem('loggedBlogUser')
     )
     if (existingUser) {
-      dispatch(setUser(existingUser))
-      blogService.setToken(existingUser.token)
+      try {
+        userType.parse(existingUser)
+        dispatch(setUser(existingUser))
+        blogService.setToken(existingUser.token)
+      } catch (e) {
+        window.localStorage.removeItem('loggedBlogUser')
+      }
     }
   }, [dispatch])
-
   const logout = () => {
     window.localStorage.removeItem('loggedBlogUser')
     dispatch(setUser(null))
@@ -36,7 +40,6 @@ const App = () => {
     )
   }
 
-  console.log(blogs)
   const matchUser = useMatch('/users/:id')
   const matchBlog = useMatch('/blogs/:id')
   const userPage = matchUser
@@ -49,7 +52,7 @@ const App = () => {
     return (
       <div>
         <h2>Log in to application</h2>
-        <Notification message={message.message} color={message.color} />
+        <Notification />
         <LoginForm />
       </div>
     )
@@ -57,7 +60,7 @@ const App = () => {
   return (
     <div>
       <h2>blogs</h2>
-      <Notification message={message.message} color={message.color} />
+      <Notification />
       <p>
         {user.name} logged in
         <button type="button" onClick={logout}>

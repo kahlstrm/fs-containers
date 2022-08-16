@@ -1,5 +1,7 @@
 import React from 'react'
-const Notification = ({ message, color }) => {
+import { useAppSelector } from '../hooks'
+const Notification = () => {
+  const { message, color } = useAppSelector((state) => state.message)
   const notificationStyle = {
     color: color,
     background: 'lightgrey',
@@ -9,10 +11,11 @@ const Notification = ({ message, color }) => {
     padding: '10px',
     marginBottom: '10px',
   }
-  if (message === null) {
+  if (message === '') {
     return null
   }
-
+  console.log(message);
+  
   return <div style={notificationStyle}>{message}</div>
 }
 export default Notification
