@@ -26,7 +26,6 @@ export const createComment = async (comment: string, id: number) => {
 }
 const getAll = async () => {
   const request = await axios.get(url)
-  console.log(request.data)
 
   const blogs = z.array(blog).parse(request.data)
   return blogs

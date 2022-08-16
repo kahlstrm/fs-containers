@@ -14,7 +14,6 @@ import UserPage from './components/UserPage'
 import { useAppDispatch, useAppSelector, useNotification } from './hooks'
 const App = () => {
   const user = useAppSelector((state) => state.user)
-  const state = useAppSelector((state) => state)
   const setNotification = useNotification()
   const dispatch = useAppDispatch()
   useEffect(() => {
@@ -37,7 +36,6 @@ const App = () => {
     window.localStorage.removeItem('loggedBlogUser')
     setNotification({ message: 'you logged yourself out', color: 'green' }, 5)
   }
-  console.log(state)
 
   if (!user) {
     return (

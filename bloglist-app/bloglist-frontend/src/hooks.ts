@@ -11,7 +11,6 @@ export const useNotification = () => {
   const [timeoutId, setTimeoutId] = useState<number>()
   const setNotification = (message: Message, seconds: number) => {
     dispatch(setMessage(message))
-    console.log(timeoutId)
 
     clearTimeout(timeoutId)
     setTimeoutId(
