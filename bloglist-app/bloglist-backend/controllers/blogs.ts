@@ -76,7 +76,7 @@ router.get('/', async (req, res) => {
     attributes: { exclude: ['userId'] },
     include: {
       model: User,
-      attributes: ['name','id'],
+      attributes: ['name', 'id'],
     },
     where,
     order: [['likes', 'DESC']],
@@ -126,7 +126,7 @@ router.put('/:id', blogMiddleware, async (req: CustomReq, res) => {
   }
   // couldn't figure out how to change blog type in middleware
   req.blog!.likes = req.body.likes;
-  const updated = await req.blog!.save();
+  const updated = await req.blog?.update({ likes: req.body.likes });
   res.json(updated);
 });
 router.post('/:id/comments', blogMiddleware, async (req: CustomReq, res) => {
