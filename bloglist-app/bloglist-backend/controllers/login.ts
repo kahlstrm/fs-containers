@@ -20,9 +20,9 @@ router.post('/', async (req, res) => {
     },
   });
   const passwordCorrect = user?.password
-    ? bcrypt.compare(body.password, user.password)
+    ? await bcrypt.compare(body.password, user.password)
     : false;
-
+  
   if (!(user && passwordCorrect)) {
     return res.status(401).json({
       error: 'invalid username or password',
@@ -40,7 +40,7 @@ router.post('/', async (req, res) => {
   }
   return res
     .status(200)
-    .send({ token, username: user.username, name: user.name });
+    .send({ token, username: user.username, name: user.name, id: user.id });
 });
 router.delete('/', tokenExtractor, async (req: ReqWithToken, res) => {
   const user = await User.findByPk(req.decodedToken?.id);
