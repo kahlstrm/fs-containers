@@ -4,7 +4,7 @@ import blogService from './services/blogs'
 import Notification from './components/Notification'
 import { initializeBlogs } from './reducers/blogReducer'
 import { logOut, setUser } from './reducers/userReducer'
-import { Routes, Route } from 'react-router-dom'
+import { Routes, Route, Link } from 'react-router-dom'
 import { initializeUsers } from './reducers/usersReducer'
 import { user as userType } from './types'
 import LoginForm from './components/LoginForm'
@@ -48,6 +48,14 @@ const App = () => {
   }
   return (
     <div>
+      <nav style={{ display: 'flex', gap: '10px' }}>
+        <Link to="/">
+          <button type="button">home</button>
+        </Link>
+        <Link to="/users">
+          <button type="button">users</button>
+        </Link>
+      </nav>
       <h2>blogs</h2>
       <Notification />
       <p>

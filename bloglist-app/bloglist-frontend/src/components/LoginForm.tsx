@@ -1,17 +1,21 @@
 import React, { useState } from 'react'
-import { useNotification } from '../hooks'
+import { useAppDispatch, useNotification } from '../hooks'
 import blogService from '../services/blogs'
 import loginService from '../services/login'
+import { user as userType } from '../types'
+import { setUser } from '../reducers/userReducer'
 const LoginForm = () => {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const setNotification = useNotification()
+  const dispatch = useAppDispatch()
   const handleLogin = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
     console.log(`username ${username} password ${password}`)
     try {
       const user = await loginService.login({ username, password })
       console.log(user)
+      dispatch(setUser(userType.parse(user)))
       window.localStorage.setItem('loggedBlogUser', JSON.stringify(user))
       blogService.setToken(user.token)
       setNotification({ message: 'login succesful', color: 'green' }, 5)
