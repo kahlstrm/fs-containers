@@ -4,7 +4,7 @@ import { Umzug, SequelizeStorage } from 'umzug';
 
 export const sequelize = new Sequelize(DATABASE_URL, {
   dialectOptions: {
-    ssl: {
+    ssl: process.env.NODE_ENV === 'production' && {
       require: true,
       rejectUnauthorized: false,
     },

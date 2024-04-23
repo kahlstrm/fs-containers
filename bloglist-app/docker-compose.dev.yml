@@ -8,6 +8,7 @@ services:
       dockerfile: dev.Dockerfile
     volumes:
       - ./bloglist-frontend:/usr/src/app
+      - /usr/src/app/node_modules
     ports:
       - 3000:3000
     environment:
@@ -20,6 +21,7 @@ services:
       dockerfile: dev.Dockerfile
     volumes:
       - ./bloglist-backend:/usr/src/app
+      - /usr/src/app/node_modules
     ports:
       - 3001:3001
     container_name: bloglist-back-dev
@@ -35,3 +37,14 @@ services:
     depends_on:
       - app
       - backend
+  db:
+    image: postgres
+    restart: always
+    # set shared memory limit when using docker-compose
+    shm_size: 128mb
+    volumes:
+      - data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_PASSWORD: password
+volumes:
+  data:

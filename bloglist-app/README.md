@@ -4,7 +4,7 @@ This is a containerized full stack application with 100% Typescript using Redux 
 
 ## Requirements
 
-For production builds, you only need [Docker](https://docs.docker.com/get-docker/) And a Postgres-database from e.g. [Railway](https://railway.app/) or [Heroku](https://devcenter.heroku.com/articles/heroku-postgresql).
+For production builds, you need [Docker](https://docs.docker.com/get-docker/) And a Postgres-database from e.g. [Railway](https://railway.app/) or [Heroku](https://devcenter.heroku.com/articles/heroku-postgresql).
 
 For development, `npm` is also needed for installing packages.
 
@@ -12,13 +12,11 @@ For development, `npm` is also needed for installing packages.
 
 Make a `.env` file from .env.example and fill in the variables.
 
-After cloning run `npm install` inside both `bloglist-frontend` and `bloglist-backend`
-
 After that in `bloglist-app` folder:
 
     docker-compose -f docker-compose.dev.yml up
 
-Now both are up and running on `localhost:8080` with the backend being bound to /api
+Now both are up and running on `localhost:8080` with the backend being proxied through `/api`
 
 ## Production
 
